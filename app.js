@@ -27,11 +27,17 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(session({ secret: 'codinghouserocks', saveUninitialized: true, resave: false }));
+
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+
+app.use(flash()); // use connect-flash for flash messages stored in session
+
+var passportRoutes = require('./app/routes.js');
+passportRoutes(app, passport);
+
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', routes);
-app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
