@@ -13,9 +13,10 @@ var flash    = require('connect-flash');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
-mongoose.connect(process.env.MONGO_URL);
-
 var app = express();
+
+mongoose.connect(process.env.MONGO_URL);
+require('./config/passport')(passport);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

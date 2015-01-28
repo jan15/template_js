@@ -4,7 +4,7 @@ module.exports = function(app, passport) {
   // HOME PAGE (with login links) ========
   // =====================================
   app.get('/', function(req, res) {
-    res.render('index.hbs', { message: 'just testing' } ); // load the index.hbs file
+    res.render('index.hbs', { user: req.user } ); // load the index.hbs file
   });
 
   // =====================================
@@ -16,6 +16,12 @@ module.exports = function(app, passport) {
     // render the page and pass in any flash data if it exists
     res.render('login.hbs', { message: req.flash('loginMessage') });
   });
+
+  app.post('/login', passport.authenticate('local-login', {
+    successRedirect : '/', // redirect to the secure profile section
+    failureRedirect : '/login', // redirect back to the signup page if there is an error
+    failureFlash : true // allow flash messages
+  }));
 
   // process the login form
   // app.post('/login', do all our passport stuff here);
@@ -29,6 +35,12 @@ module.exports = function(app, passport) {
     // render the page and pass in any flash data if it exists
     res.render('signup.hbs', { message: req.flash('signupMessage') });
   });
+
+  app.post('/signup', passport.authenticate('local-signup', {
+    successRedirect : '/', // redirect to the secure profile section
+    failureRedirect : '/signup', // redirect back to the signup page if there is an error
+    failureFlash : true // allow flash messages
+  }));
 
   // process the signup form
   // app.post('/signup', do all our passport stuff here);
