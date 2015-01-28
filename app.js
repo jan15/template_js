@@ -4,9 +4,16 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session      = require('express-session');
+
+var mongoose = require('mongoose');
+var passport = require('passport');
+var flash    = require('connect-flash');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+
+mongoose.connect(process.env.MONGO_URL);
 
 var app = express();
 
@@ -19,6 +26,7 @@ app.set('view engine', 'hbs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(session({ secret: 'codinghouserocks', saveUninitialized: true, resave: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
